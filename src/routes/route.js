@@ -15,7 +15,7 @@ router.get("/functionup/collegeDetails",internController.getInternByCollege);
 
 
 
-router.all("/**",  (req, res) => {
+router.all("/*",  (req, res) => {
     res.status(404).send({ status: false, msg: "The api you request is not available" })
 });
 
