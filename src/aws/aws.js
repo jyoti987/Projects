@@ -6,7 +6,7 @@ aws.config.update({
   region: "ap-south-1"
 })
 
-const uploadFile = async (file) => {
+const uploadFile = async function(file){
   return new Promise(function(resolve, reject){
 
     const s3 = new aws.S3({appVersion : '2006-03-01'})
@@ -17,7 +17,7 @@ const uploadFile = async (file) => {
       Key : "abc-aws/" + file.originalname,  //add file in abc-aws folder with requested filename
       Body : file.buffer                     //data or file data, present in file.buffer(in form of packets)
     }
- 
+
     s3.upload(uploadParams, function(err, data){
 
       if(err) return reject ({error : err})

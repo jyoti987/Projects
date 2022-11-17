@@ -2,7 +2,6 @@ const express = require('express');
 const route = require("./routes/route.js");
 const mongoose = require('mongoose');
 const multer = require("multer");
-const { AppConfig } = require('aws-sdk');
 
 const app = express();
 
@@ -21,7 +20,7 @@ mongoose.connect("mongodb+srv://ShailyTripathi:ShailyCompass2125@shailytripathi.
 
 app.use('/', route);
 
-app.use("/*", function (req, res) {
+app.use("/", function (req, res) {
     res.status(400).send({ status: false, message: "The api you request is not available" })
 });
 

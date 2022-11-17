@@ -12,14 +12,14 @@ const { json } = require("express");
 
 const createUser = async function (req, res) {
     try {
-        const reqBody = req.body;
+        let reqBody = req.body;
 
         // request Body validation
         if (!isValidRequestBody(reqBody))
             return res.status(400)
                 .send({ status: false, message: "Please provide data in request body!" });
 
-        const { fname, lname, email, password, phone, address, profileImage } = reqBody //destructuring
+        let { fname, lname, email, password, phone, address } = reqBody //destructuring
 
         let files = req.files;
 
@@ -64,7 +64,7 @@ const createUser = async function (req, res) {
                 .send({ status: false, message: "Password should be between 8 and 15 character and it should be alpha numeric" });
 
         // encrypt the password and set into the db
-        reqBody.password = await bcrypt.hash(password, 10);
+        password = await bcrypt.hash(password, 10);
 
 
         // ProfileImage Validation
@@ -78,8 +78,8 @@ const createUser = async function (req, res) {
                 .send({ status: false, message: "Image format Must be in jpeg,jpg,png" })
 
         let profileImgUrl = await uploadFile(files[0]);
-        reqBody.profileImage = profileImgUrl
-
+        profileImage = profileImgUrl
+console.log(files)
 
         //phone validation
         if (!phone)
@@ -265,7 +265,7 @@ const loginUser = async function (req, res) {
             { expiresIn: '24h' }
 
         );
-
+console.log()
         return res.status(200).send({ status: true, message: "User login successfull", data: { userid: user._id, token: token } });
 
 

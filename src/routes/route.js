@@ -11,7 +11,7 @@ const router = express.Router();
 router.post("/register", createUser)
 router.post("/login", loginUser)
 router.get("/user/:userId/profile", authentication, getUserDetails)
-router.put("/user/:userId/profile", authentication, authorization, updateUser)
+router.put("/user/:userId/profile",  updateUser)
 
 
 //==========Feature II --> Product===================
