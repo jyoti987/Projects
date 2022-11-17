@@ -3,6 +3,8 @@ const userModel = require("../models/userModel")
 const reviewModel = require("../models/reviewModel")
 const moment = require("moment")
 const mongoose = require("mongoose")
+const aws= require("aws-sdk")
+
 
 const isValid = function (value) {
     if (typeof value === "undefined" || value === null) return false;
@@ -16,9 +18,55 @@ const isValidObjectId = function (ObjectId) {
 }
 
 
+aws.config.update({
+    accessKeyId: "AKIAY3L35MCRZNIRGT6N",
+    secretAccessKey: "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",
+    region: "ap-south-1"
+})
+
+
+
+
+
+let uploadFile= async ( file) =>{
+    return new Promise( function(resolve, reject) {
+     // this function will upload file to aws and return the link
+     let s3= new aws.S3({apiVersion: '2006-03-01'}); // we will be using the s3 service of aws
+ 
+     var uploadParams= {
+         ACL: "public-read",
+         Bucket: "classroom-training-bucket",  //HERE
+         Key: "books/" + file.originalname, //HERE 
+         Body: file.buffer
+     }
+ 
+ 
+     s3.upload( uploadParams, function (err, data ){
+         if(err) {
+             return reject({"error": err})
+         }
+         console.log(data)
+         console.log("file uploaded succesfully")
+         return resolve(data.Location)
+     })
+ 
+     // let data= await s3.upload( uploadParams)
+     // if( data) return data.Location
+     // else return "there is an error"
+ 
+    })
+ }
+
 //====================Create Books================================================
 const createBook = async function (req, res) {
     try {
+        let files= req.files
+        if(files && files.length>0){
+            //upload to s3 and get the uploaded link
+            // res.send the link back to frontend/postman
+            let uploadedFileURL= await uploadFile( files[0] )
+            res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
+        }
         let data = req.body
 
         if (Object.keys(data).length == 0) {
@@ -46,6 +94,11 @@ const createBook = async function (req, res) {
         if (!isValid(releasedAt)) return res.status(400).send({ status: false, msg: "releasedAt is Required" })
         if (!moment.utc(releasedAt, "YYYY-MM-DD", true).isValid()) return res.status(400).send({ status: false, message: "enter date in valid format eg. (YYYY-MM-DD)...!" })
 
+
+
+        
+
+        
 
         let userID = await userModel.findById(userId)
         if (!userID) {

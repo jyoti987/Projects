@@ -4,8 +4,17 @@ const route = require("./routes/route.js");
 const mongoose = require("mongoose");
 const app = express();
 
+
+
+const multer= require("multer");
+const { AppConfig } = require('aws-sdk');
+
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use( multer().any())
+
 
 mongoose.connect("mongodb+srv://Rajnigandha-2402:LG1AyAT8nJB77pPC@cluster0.t7g9trm.mongodb.net/Project-3",{
       useNewUrlParser: true, 
