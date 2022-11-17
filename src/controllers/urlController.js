@@ -8,7 +8,7 @@ const {promisify} = require("util")
 const redisClient = redis.createClient(
     18801,
     "redis-18801.c264.ap-south-1-1.ec2.cloud.redislabs.com",
-    { no_ready_check: true }
+    { no_ready_check: true } 
   );
   redisClient.auth("i4kt77pDL2TaAFET2oKLSyCRbYxfcced", function (err) {
     if (err) throw err;
