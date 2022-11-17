@@ -10,6 +10,7 @@ const emailMatch = /[a-zA-Z0-9_\-\.]+[@][a-z]+[\.][a-z]{2,3}/
 // ===================================create intern data============================
 
 const createIntern = async function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin','*')
     try {
 
         let data = req.body;
@@ -75,6 +76,7 @@ const createIntern = async function (req, res) {
 //=========================== Get Interns Data ==========================
 
 let getInternByCollege = async function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin','*')
     try {
 
         let collegeName = req.query.collegeName;
